@@ -27,3 +27,7 @@ paths:
     $ref: './controller/user_controller.yaml#/paths/~1users~1me'
   /users/me/password:
     $ref: './controller/user_controller.yaml#/paths/~1users~1me~1password'
+  /loans:
+    $ref: './controller/loan_controller.yaml#/paths/~1loans'
+  /loans/{id}:
+    $ref: './controller/loan_controller.yaml#/paths/~1loans~1{id}'
