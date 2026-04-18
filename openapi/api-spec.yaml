@@ -21,6 +21,8 @@ paths:
     $ref: './controller/auth_controller.yaml#/paths/~1auth~1register'
   /auth/login:
     $ref: './controller/auth_controller.yaml#/paths/~1auth~1login'
+  /auth/google:
+    $ref: './controller/auth_controller.yaml#/paths/~1auth~1google'
   /users/me:
     $ref: './controller/user_controller.yaml#/paths/~1users~1me'
   /users/me/password:

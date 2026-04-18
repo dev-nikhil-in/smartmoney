@@ -51,6 +51,32 @@ paths:
               schema:
                 $ref: '#/components/schemas/BaseResponse'
 
+  /auth/google:
+    post:
+      tags: [ Auth ]
+      summary: Google OAuth2 SSO Login
+      operationId: googleLogin
+      security: [ ]
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/GoogleAuthRequest'
+      responses:
+        '200':
+          description: Login successful
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/LoginResponse'
+        '400':
+          description: Invalid Google token
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BaseResponse'
+
 components:
   schemas:
     BaseResponse:
@@ -120,3 +146,11 @@ components:
         password:
           type: string
           format: password
+
+    GoogleAuthRequest:
+      type: object
+      required: [ idToken ]
+      properties:
+        idToken:
+          type: string
+          description: Google ID Token from frontend
