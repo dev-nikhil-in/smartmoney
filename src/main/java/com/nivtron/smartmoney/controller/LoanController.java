@@ -1,11 +1,9 @@
 package com.nivtron.smartmoney.controller;
 
 import com.nivtron.smartmoney.api.LoansApi;
-import com.nivtron.smartmoney.dto.BaseResponse;
-import com.nivtron.smartmoney.dto.LoanListResponse;
-import com.nivtron.smartmoney.dto.LoanRequest;
-import com.nivtron.smartmoney.dto.LoanResponse;
+import com.nivtron.smartmoney.dto.*;
 import com.nivtron.smartmoney.service.LoanService;
+import com.nivtron.smartmoney.service.StrategyService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -16,6 +14,7 @@ import org.springframework.web.bind.annotation.RestController;
 public class LoanController implements LoansApi {
 
   private final LoanService loanService;
+  private final StrategyService strategyService;
 
   private String getCurrentUserEmail() {
     return (String) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
@@ -24,6 +23,16 @@ public class LoanController implements LoansApi {
   @Override
   public ResponseEntity<LoanListResponse> getAllLoans() {
     return ResponseEntity.ok(loanService.getAllLoans(getCurrentUserEmail()));
+  }
+
+  @Override
+  public ResponseEntity<StrategyResponse> getAvalancheStrategy() {
+    return ResponseEntity.ok(strategyService.getAvalancheStrategy(getCurrentUserEmail()));
+  }
+
+  @Override
+  public ResponseEntity<StrategyResponse> getSnowballStrategy() {
+    return ResponseEntity.ok(strategyService.getSnowballStrategy(getCurrentUserEmail()));
   }
 
   @Override
