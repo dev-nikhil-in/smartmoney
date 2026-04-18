@@ -91,4 +91,15 @@ public class BaseResponseUtil {
     res.setTimestamp(OffsetDateTime.now());
     return res;
   }
+
+  public static StrategyResponse strategySuccess(String message, StrategyData data) {
+    StrategyResponse res = new StrategyResponse();
+    res.setSuccess(true);
+    res.setStatusCode(200);
+    res.setMessage(message);
+    res.setData(data);
+    res.setErrors(null);
+    res.setTimestamp(OffsetDateTime.now());
+    return res;
+  }
 }

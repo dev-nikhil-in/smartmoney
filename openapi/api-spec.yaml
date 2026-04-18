@@ -4,6 +4,17 @@ info:
   description: Personal Finance & Loan Management API
   version: 1.0.0
 
+tags:
+  - name: Auth
+    description: Authentication APIs
+  - name: User
+    description: User profile APIs
+  - name: Loan
+    description: Loan management APIs
+  - name: Strategy
+    description: Repayment strategy APIs
+  - name: Dashboard
+    description: Dashboard APIs
 
 components:
   securitySchemes:
@@ -29,6 +40,10 @@ paths:
     $ref: './controller/user_controller.yaml#/paths/~1users~1me~1password'
   /loans:
     $ref: './controller/loan_controller.yaml#/paths/~1loans'
+  /loans/strategy/avalanche:
+    $ref: './controller/loan_controller.yaml#/paths/~1loans~1strategy~1avalanche'
+  /loans/strategy/snowball:
+    $ref: './controller/loan_controller.yaml#/paths/~1loans~1strategy~1snowball'
   /loans/{id}:
     $ref: './controller/loan_controller.yaml#/paths/~1loans~1{id}'
   /dashboard:

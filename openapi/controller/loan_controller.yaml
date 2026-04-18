@@ -48,6 +48,44 @@ paths:
               schema:
                 $ref: '#/components/schemas/BaseResponse'
 
+  /loans/strategy/avalanche:
+    get:
+      tags: [Strategy]
+      summary: Get avalanche repayment strategy (high interest first)
+      operationId: getAvalancheStrategy
+      responses:
+        '200':
+          description: Avalanche strategy fetched successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/StrategyResponse'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BaseResponse'
+
+  /loans/strategy/snowball:
+    get:
+      tags: [Strategy]
+      summary: Get snowball repayment strategy (small outstanding first)
+      operationId: getSnowballStrategy
+      responses:
+        '200':
+          description: Snowball strategy fetched successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/StrategyResponse'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BaseResponse'
+
   /loans/{id}:
     get:
       tags: [Loan]
@@ -250,3 +288,51 @@ components:
               type: array
               items:
                 $ref: '#/components/schemas/LoanData'
+
+    PrioritizedLoan:
+      type: object
+      properties:
+        priority:
+          type: integer
+        loanId:
+          type: integer
+          format: int64
+        loanName:
+          type: string
+        outstandingAmount:
+          type: number
+          x-java-type: java.math.BigDecimal
+        interestRate:
+          type: number
+          x-java-type: java.math.BigDecimal
+        emiAmount:
+          type: number
+          x-java-type: java.math.BigDecimal
+        reason:
+          type: string
+
+    StrategyData:
+      type: object
+      properties:
+        strategy:
+          type: string
+          enum: [AVALANCHE, SNOWBALL]
+        recommendation:
+          type: string
+        interestSaved:
+          type: number
+          x-java-type: java.math.BigDecimal
+        monthsEarlier:
+          type: integer
+        prioritizedLoans:
+          type: array
+          items:
+            $ref: '#/components/schemas/PrioritizedLoan'
+
+    StrategyResponse:
+      allOf:
+        - $ref: '#/components/schemas/BaseResponse'
+        - type: object
+          properties:
+            data:
+              $ref: '#/components/schemas/StrategyData'

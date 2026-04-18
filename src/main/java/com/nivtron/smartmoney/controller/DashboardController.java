@@ -12,15 +12,14 @@ import org.springframework.web.bind.annotation.RestController;
 @RequiredArgsConstructor
 public class DashboardController implements DashboardApi {
 
-    private final DashboardService dashboardService;
+  private final DashboardService dashboardService;
 
-    private String getCurrentUserEmail() {
-        return (String) SecurityContextHolder.getContext()
-                .getAuthentication().getPrincipal();
-    }
+  private String getCurrentUserEmail() {
+    return (String) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+  }
 
-    @Override
-    public ResponseEntity<DashboardResponse> getDashboard() {
-        return ResponseEntity.ok(dashboardService.getDashboard(getCurrentUserEmail()));
-    }
+  @Override
+  public ResponseEntity<DashboardResponse> getDashboard() {
+    return ResponseEntity.ok(dashboardService.getDashboard(getCurrentUserEmail()));
+  }
 }
