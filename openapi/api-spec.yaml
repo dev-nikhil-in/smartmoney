@@ -1,0 +1,27 @@
+openapi: 3.0.1
+info:
+  title: Nivtron SmartMoney API
+  description: Personal Finance & Loan Management API
+  version: 1.0.0
+
+
+components:
+  securitySchemes:
+    BearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+
+  schemas:
+    BaseResponse:
+      $ref: './controller/auth_controller.yaml#/components/schemas/BaseResponse'
+
+paths:
+  /auth/register:
+    $ref: './controller/auth_controller.yaml#/paths/~1auth~1register'
+  /auth/login:
+    $ref: './controller/auth_controller.yaml#/paths/~1auth~1login'
+  /users/me:
+    $ref: './controller/user_controller.yaml#/paths/~1users~1me'
+  /users/me/password:
+    $ref: './controller/user_controller.yaml#/paths/~1users~1me~1password'
