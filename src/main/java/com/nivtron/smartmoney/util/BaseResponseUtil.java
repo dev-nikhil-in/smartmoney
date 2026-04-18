@@ -80,4 +80,15 @@ public class BaseResponseUtil {
     res.setTimestamp(OffsetDateTime.now());
     return res;
   }
+
+  public static DashboardResponse dashboardSuccess(String message, DashboardData data) {
+    DashboardResponse res = new DashboardResponse();
+    res.setSuccess(true);
+    res.setStatusCode(200);
+    res.setMessage(message);
+    res.setData(data);
+    res.setErrors(null);
+    res.setTimestamp(OffsetDateTime.now());
+    return res;
+  }
 }

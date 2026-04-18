@@ -1,0 +1,98 @@
+paths:
+  /dashboard:
+    get:
+      tags: [Dashboard]
+      summary: Get financial dashboard summary
+      operationId: getDashboard
+      responses:
+        '200':
+          description: Dashboard fetched successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DashboardResponse'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BaseResponse'
+
+components:
+  schemas:
+    BaseResponse:
+      type: object
+      properties:
+        success:
+          type: boolean
+        statusCode:
+          type: integer
+        message:
+          type: string
+        errors:
+          type: array
+          nullable: true
+          items:
+            type: string
+        timestamp:
+          type: string
+          format: date-time
+
+    LoanSummary:
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int64
+        loanName:
+          type: string
+        outstandingAmount:
+          type: number
+          x-java-type: java.math.BigDecimal
+        interestRate:
+          type: number
+          x-java-type: java.math.BigDecimal
+        emiAmount:
+          type: number
+          x-java-type: java.math.BigDecimal
+
+    HighInterestAlert:
+      type: object
+      properties:
+        loanId:
+          type: integer
+          format: int64
+        loanName:
+          type: string
+        interestRate:
+          type: number
+          x-java-type: java.math.BigDecimal
+        outstandingAmount:
+          type: number
+          x-java-type: java.math.BigDecimal
+
+    DashboardData:
+      type: object
+      properties:
+        totalOutstanding:
+          type: number
+          x-java-type: java.math.BigDecimal
+        monthlyEmi:
+          type: number
+          x-java-type: java.math.BigDecimal
+        totalLoans:
+          type: integer
+        highInterestAlert:
+          $ref: '#/components/schemas/HighInterestAlert'
+        loanBreakdown:
+          type: array
+          items:
+            $ref: '#/components/schemas/LoanSummary'
+
+    DashboardResponse:
+      allOf:
+        - $ref: '#/components/schemas/BaseResponse'
+        - type: object
+          properties:
+            data:
+              $ref: '#/components/schemas/DashboardData'
