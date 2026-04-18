@@ -1,11 +1,6 @@
 package com.nivtron.smartmoney.util;
 
-import com.nivtron.smartmoney.dto.AuthData;
-import com.nivtron.smartmoney.dto.BaseResponse;
-import com.nivtron.smartmoney.dto.LoginResponse;
-import com.nivtron.smartmoney.dto.RegisterResponse;
-import com.nivtron.smartmoney.dto.UserProfileData;
-import com.nivtron.smartmoney.dto.UserProfileResponse;
+import com.nivtron.smartmoney.dto.*;
 import java.time.OffsetDateTime;
 import java.util.List;
 
@@ -59,6 +54,28 @@ public class BaseResponseUtil {
     res.setSuccess(true);
     res.setStatusCode(statusCode);
     res.setMessage(message);
+    res.setErrors(null);
+    res.setTimestamp(OffsetDateTime.now());
+    return res;
+  }
+
+  public static LoanResponse loanSuccess(String message, LoanData data) {
+    LoanResponse res = new LoanResponse();
+    res.setSuccess(true);
+    res.setStatusCode(200);
+    res.setMessage(message);
+    res.setData(data);
+    res.setErrors(null);
+    res.setTimestamp(OffsetDateTime.now());
+    return res;
+  }
+
+  public static LoanListResponse loanListSuccess(String message, List<LoanData> data) {
+    LoanListResponse res = new LoanListResponse();
+    res.setSuccess(true);
+    res.setStatusCode(200);
+    res.setMessage(message);
+    res.setData(data);
     res.setErrors(null);
     res.setTimestamp(OffsetDateTime.now());
     return res;

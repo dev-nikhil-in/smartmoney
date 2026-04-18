@@ -1,0 +1,252 @@
+paths:
+  /loans:
+    get:
+      tags: [Loan]
+      summary: Get all loans of current user
+      operationId: getAllLoans
+      responses:
+        '200':
+          description: Loans fetched successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/LoanListResponse'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BaseResponse'
+
+    post:
+      tags: [Loan]
+      summary: Add a new loan
+      operationId: addLoan
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/LoanRequest'
+      responses:
+        '200':
+          description: Loan added successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/LoanResponse'
+        '400':
+          description: Validation error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BaseResponse'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BaseResponse'
+
+  /loans/{id}:
+    get:
+      tags: [Loan]
+      summary: Get loan by ID
+      operationId: getLoanById
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+            format: int64
+      responses:
+        '200':
+          description: Loan fetched successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/LoanResponse'
+        '404':
+          description: Loan not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BaseResponse'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BaseResponse'
+
+    put:
+      tags: [Loan]
+      summary: Update loan by ID
+      operationId: updateLoan
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+            format: int64
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/LoanRequest'
+      responses:
+        '200':
+          description: Loan updated successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/LoanResponse'
+        '404':
+          description: Loan not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BaseResponse'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BaseResponse'
+
+    delete:
+      tags: [Loan]
+      summary: Delete loan by ID
+      operationId: deleteLoan
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+            format: int64
+      responses:
+        '200':
+          description: Loan deleted successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BaseResponse'
+        '404':
+          description: Loan not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BaseResponse'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BaseResponse'
+
+components:
+  schemas:
+    BaseResponse:
+      type: object
+      properties:
+        success:
+          type: boolean
+        statusCode:
+          type: integer
+        message:
+          type: string
+        errors:
+          type: array
+          nullable: true
+          items:
+            type: string
+        timestamp:
+          type: string
+          format: date-time
+
+    LoanRequest:
+      type: object
+      required: [loanName, totalAmount, outstandingAmount, interestRate, emiAmount, tenureMonths, startDate]
+      properties:
+        loanName:
+          type: string
+          maxLength: 100
+          example: "Home Loan - SBI"
+        totalAmount:
+          type: number
+          x-java-type: java.math.BigDecimal
+          example: 2000000.00
+        outstandingAmount:
+          type: number
+          x-java-type: java.math.BigDecimal
+          example: 1500000.00
+        interestRate:
+          type: number
+          x-java-type: java.math.BigDecimal
+          example: 8.5
+        emiAmount:
+          type: number
+          x-java-type: java.math.BigDecimal
+          example: 18000.00
+        tenureMonths:
+          type: integer
+          example: 240
+        startDate:
+          type: string
+          format: date
+          example: "2023-01-01"
+
+    LoanData:
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int64
+        loanName:
+          type: string
+        totalAmount:
+          type: number
+          x-java-type: java.math.BigDecimal
+        outstandingAmount:
+          type: number
+          x-java-type: java.math.BigDecimal
+        interestRate:
+          type: number
+          x-java-type: java.math.BigDecimal
+        emiAmount:
+          type: number
+          x-java-type: java.math.BigDecimal
+        tenureMonths:
+          type: integer
+        startDate:
+          type: string
+          format: date
+        createdAt:
+          type: string
+          format: date-time
+        updatedAt:
+          type: string
+          format: date-time
+          nullable: true
+
+    LoanResponse:
+      allOf:
+        - $ref: '#/components/schemas/BaseResponse'
+        - type: object
+          properties:
+            data:
+              $ref: '#/components/schemas/LoanData'
+
+    LoanListResponse:
+      allOf:
+        - $ref: '#/components/schemas/BaseResponse'
+        - type: object
+          properties:
+            data:
+              type: array
+              items:
+                $ref: '#/components/schemas/LoanData'

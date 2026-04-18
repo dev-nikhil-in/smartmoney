@@ -4,8 +4,11 @@ import com.nivtron.smartmoney.dto.BaseResponse;
 import com.nivtron.smartmoney.util.BaseResponseUtil;
 import java.util.List;
 import java.util.NoSuchElementException;
+
+import jakarta.validation.ConstraintViolationException;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
+import org.springframework.http.converter.HttpMessageNotReadableException;
 import org.springframework.security.access.AccessDeniedException;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
@@ -77,5 +80,20 @@ public class GlobalExceptionHandler {
     log.error("Unexpected error: ", ex);
     return ResponseEntity.status(500)
         .body(BaseResponseUtil.error(500, ex.getMessage(), List.of(ex.getClass().getName())));
+  }
+
+  @ExceptionHandler(HttpMessageNotReadableException.class)
+  public ResponseEntity<BaseResponse> handleHttpMessageNotReadable(HttpMessageNotReadableException ex) {
+    return ResponseEntity.status(400)
+            .body(BaseResponseUtil.error(400, "Invalid request format. Please check your input", null));
+  }
+
+  @ExceptionHandler(ConstraintViolationException.class)
+  public ResponseEntity<BaseResponse> handleConstraintViolation(ConstraintViolationException ex) {
+    List<String> errors = ex.getConstraintViolations().stream()
+            .map(v -> v.getPropertyPath() + ": " + v.getMessage())
+            .toList();
+    return ResponseEntity.status(400)
+            .body(BaseResponseUtil.error(400, "Validation failed", errors));
   }
 }
