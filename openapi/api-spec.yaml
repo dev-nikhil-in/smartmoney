@@ -31,3 +31,5 @@ paths:
     $ref: './controller/loan_controller.yaml#/paths/~1loans'
   /loans/{id}:
     $ref: './controller/loan_controller.yaml#/paths/~1loans~1{id}'
+  /dashboard:
+    $ref: './controller/dashboard_controller.yaml#/paths/~1dashboard'
