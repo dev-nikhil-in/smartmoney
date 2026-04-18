@@ -118,6 +118,44 @@ paths:
               schema:
                 $ref: '#/components/schemas/BaseResponse'
 
+  /loans/{id}/simulate:
+    post:
+      tags: [ Loan ]
+      summary: Simulate EMI with extra monthly payment
+      operationId: simulateLoan
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+            format: int64
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/SimulateRequest'
+      responses:
+        '200':
+          description: Simulation result
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SimulateResponse'
+        '404':
+          description: Loan not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BaseResponse'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BaseResponse'
+
     put:
       tags: [Loan]
       summary: Update loan by ID
@@ -336,3 +374,37 @@ components:
           properties:
             data:
               $ref: '#/components/schemas/StrategyData'
+    SimulateRequest:
+      type: object
+      required: [ extraMonthlyPayment ]
+      properties:
+        extraMonthlyPayment:
+          type: number
+          x-java-type: java.math.BigDecimal
+          example: 5000.00
+
+    SimulateData:
+      type: object
+      properties:
+        originalClosureDate:
+          type: string
+          format: date
+        newClosureDate:
+          type: string
+          format: date
+        monthsSaved:
+          type: integer
+        interestSaved:
+          type: number
+          x-java-type: java.math.BigDecimal
+        newMonthlyPayment:
+          type: number
+          x-java-type: java.math.BigDecimal
+
+    SimulateResponse:
+      allOf:
+        - $ref: '#/components/schemas/BaseResponse'
+        - type: object
+          properties:
+            data:
+              $ref: '#/components/schemas/SimulateData'

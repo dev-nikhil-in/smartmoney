@@ -46,5 +46,13 @@ paths:
     $ref: './controller/loan_controller.yaml#/paths/~1loans~1strategy~1snowball'
   /loans/{id}:
     $ref: './controller/loan_controller.yaml#/paths/~1loans~1{id}'
+  /loans/{id}/simulate:
+    $ref: './controller/loan_controller.yaml#/paths/~1loans~1{id}~1simulate'
   /dashboard:
     $ref: './controller/dashboard_controller.yaml#/paths/~1dashboard'
+  /calculators/emi:
+    $ref: './controller/calculator_controller.yaml#/paths/~1calculators~1emi'
+  /calculators/sip:
+    $ref: './controller/calculator_controller.yaml#/paths/~1calculators~1sip'
+  /calculators/lumpsum:
+    $ref: './controller/calculator_controller.yaml#/paths/~1calculators~1lumpsum'
