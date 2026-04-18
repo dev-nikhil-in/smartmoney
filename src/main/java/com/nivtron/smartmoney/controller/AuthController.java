@@ -1,11 +1,9 @@
 package com.nivtron.smartmoney.controller;
 
 import com.nivtron.smartmoney.api.AuthApi;
-import com.nivtron.smartmoney.dto.LoginRequest;
-import com.nivtron.smartmoney.dto.LoginResponse;
-import com.nivtron.smartmoney.dto.RegisterRequest;
-import com.nivtron.smartmoney.dto.RegisterResponse;
+import com.nivtron.smartmoney.dto.*;
 import com.nivtron.smartmoney.service.AuthService;
+import com.nivtron.smartmoney.service.GoogleSSOService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RestController;
@@ -15,6 +13,12 @@ import org.springframework.web.bind.annotation.RestController;
 public class AuthController implements AuthApi {
 
   private final AuthService authService;
+  private final GoogleSSOService googleSsoService;
+
+  @Override
+  public ResponseEntity<LoginResponse> googleLogin(GoogleAuthRequest request) {
+    return ResponseEntity.ok(googleSsoService.googleLogin(request.getIdToken()));
+  }
 
   @Override
   public ResponseEntity<LoginResponse> loginUser(LoginRequest loginRequest) {
