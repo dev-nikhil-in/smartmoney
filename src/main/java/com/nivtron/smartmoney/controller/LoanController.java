@@ -3,6 +3,7 @@ package com.nivtron.smartmoney.controller;
 import com.nivtron.smartmoney.api.LoansApi;
 import com.nivtron.smartmoney.dto.*;
 import com.nivtron.smartmoney.service.LoanService;
+import com.nivtron.smartmoney.service.SimulatorService;
 import com.nivtron.smartmoney.service.StrategyService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -15,6 +16,7 @@ public class LoanController implements LoansApi {
 
   private final LoanService loanService;
   private final StrategyService strategyService;
+  private final SimulatorService simulatorService;
 
   private String getCurrentUserEmail() {
     return (String) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
@@ -23,16 +25,6 @@ public class LoanController implements LoansApi {
   @Override
   public ResponseEntity<LoanListResponse> getAllLoans() {
     return ResponseEntity.ok(loanService.getAllLoans(getCurrentUserEmail()));
-  }
-
-  @Override
-  public ResponseEntity<StrategyResponse> getAvalancheStrategy() {
-    return ResponseEntity.ok(strategyService.getAvalancheStrategy(getCurrentUserEmail()));
-  }
-
-  @Override
-  public ResponseEntity<StrategyResponse> getSnowballStrategy() {
-    return ResponseEntity.ok(strategyService.getSnowballStrategy(getCurrentUserEmail()));
   }
 
   @Override
@@ -53,5 +45,20 @@ public class LoanController implements LoansApi {
   @Override
   public ResponseEntity<BaseResponse> deleteLoan(Long id) {
     return ResponseEntity.ok(loanService.deleteLoan(id, getCurrentUserEmail()));
+  }
+
+  @Override
+  public ResponseEntity<StrategyResponse> getAvalancheStrategy() {
+    return ResponseEntity.ok(strategyService.getAvalancheStrategy(getCurrentUserEmail()));
+  }
+
+  @Override
+  public ResponseEntity<StrategyResponse> getSnowballStrategy() {
+    return ResponseEntity.ok(strategyService.getSnowballStrategy(getCurrentUserEmail()));
+  }
+
+  @Override
+  public ResponseEntity<SimulateResponse> simulateLoan(Long id, SimulateRequest simulateRequest) {
+    return ResponseEntity.ok(simulatorService.simulate(id, simulateRequest, getCurrentUserEmail()));
   }
 }

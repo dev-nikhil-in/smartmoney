@@ -102,4 +102,49 @@ public class BaseResponseUtil {
     res.setTimestamp(OffsetDateTime.now());
     return res;
   }
+
+  public static SimulateResponse simulateSuccess(String message, SimulateData data) {
+    SimulateResponse res = new SimulateResponse();
+    res.setSuccess(true);
+    res.setStatusCode(200);
+    res.setMessage(message);
+    res.setData(data);
+    res.setErrors(null);
+    res.setTimestamp(OffsetDateTime.now());
+    return res;
+  }
+
+  public static EmiCalculatorResponse emiSuccess(String message, EmiCalculatorData data) {
+    EmiCalculatorResponse res = new EmiCalculatorResponse();
+    res.setSuccess(true);
+    res.setStatusCode(200);
+    res.setMessage(message);
+    res.setData(data);
+    res.setErrors(null);
+    res.setTimestamp(OffsetDateTime.now());
+    return res;
+  }
+
+  public static SipCalculatorResponse sipSuccess(String message, SipCalculatorData data) {
+    SipCalculatorResponse res = new SipCalculatorResponse();
+    res.setSuccess(true);
+    res.setStatusCode(200);
+    res.setMessage(message);
+    res.setData(data);
+    res.setErrors(null);
+    res.setTimestamp(OffsetDateTime.now());
+    return res;
+  }
+
+  public static LumpsumCalculatorResponse lumpsumSuccess(
+      String message, LumpsumCalculatorData data) {
+    LumpsumCalculatorResponse res = new LumpsumCalculatorResponse();
+    res.setSuccess(true);
+    res.setStatusCode(200);
+    res.setMessage(message);
+    res.setData(data);
+    res.setErrors(null);
+    res.setTimestamp(OffsetDateTime.now());
+    return res;
+  }
 }

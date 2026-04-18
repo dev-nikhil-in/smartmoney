@@ -1,0 +1,209 @@
+paths:
+  /calculators/emi:
+    post:
+      tags: [Calculator]
+      summary: Calculate EMI
+      operationId: calculateEmi
+      security: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/EmiCalculatorRequest'
+      responses:
+        '200':
+          description: EMI calculated successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/EmiCalculatorResponse'
+        '400':
+          description: Validation error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BaseResponse'
+
+  /calculators/sip:
+    post:
+      tags: [Calculator]
+      summary: Calculate SIP future value
+      operationId: calculateSip
+      security: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/SipCalculatorRequest'
+      responses:
+        '200':
+          description: SIP calculated successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SipCalculatorResponse'
+        '400':
+          description: Validation error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BaseResponse'
+
+  /calculators/lumpsum:
+    post:
+      tags: [Calculator]
+      summary: Calculate lumpsum future value
+      operationId: calculateLumpsum
+      security: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/LumpsumCalculatorRequest'
+      responses:
+        '200':
+          description: Lumpsum calculated successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/LumpsumCalculatorResponse'
+        '400':
+          description: Validation error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BaseResponse'
+
+components:
+  schemas:
+    BaseResponse:
+      type: object
+      properties:
+        success:
+          type: boolean
+        statusCode:
+          type: integer
+        message:
+          type: string
+        errors:
+          type: array
+          nullable: true
+          items:
+            type: string
+        timestamp:
+          type: string
+          format: date-time
+
+    EmiCalculatorRequest:
+      type: object
+      required: [loanAmount, interestRate, tenureMonths]
+      properties:
+        loanAmount:
+          type: number
+          x-java-type: java.math.BigDecimal
+          example: 1000000.00
+        interestRate:
+          type: number
+          x-java-type: java.math.BigDecimal
+          example: 8.5
+        tenureMonths:
+          type: integer
+          example: 120
+
+    EmiCalculatorData:
+      type: object
+      properties:
+        emi:
+          type: number
+          x-java-type: java.math.BigDecimal
+        totalPayment:
+          type: number
+          x-java-type: java.math.BigDecimal
+        totalInterest:
+          type: number
+          x-java-type: java.math.BigDecimal
+
+    EmiCalculatorResponse:
+      allOf:
+        - $ref: '#/components/schemas/BaseResponse'
+        - type: object
+          properties:
+            data:
+              $ref: '#/components/schemas/EmiCalculatorData'
+
+    SipCalculatorRequest:
+      type: object
+      required: [monthlyInvestment, annualReturnRate, tenureYears]
+      properties:
+        monthlyInvestment:
+          type: number
+          x-java-type: java.math.BigDecimal
+          example: 5000.00
+        annualReturnRate:
+          type: number
+          x-java-type: java.math.BigDecimal
+          example: 12.0
+        tenureYears:
+          type: integer
+          example: 10
+
+    SipCalculatorData:
+      type: object
+      properties:
+        totalInvested:
+          type: number
+          x-java-type: java.math.BigDecimal
+        futureValue:
+          type: number
+          x-java-type: java.math.BigDecimal
+        wealthGained:
+          type: number
+          x-java-type: java.math.BigDecimal
+
+    SipCalculatorResponse:
+      allOf:
+        - $ref: '#/components/schemas/BaseResponse'
+        - type: object
+          properties:
+            data:
+              $ref: '#/components/schemas/SipCalculatorData'
+
+    LumpsumCalculatorRequest:
+      type: object
+      required: [investmentAmount, annualReturnRate, tenureYears]
+      properties:
+        investmentAmount:
+          type: number
+          x-java-type: java.math.BigDecimal
+          example: 100000.00
+        annualReturnRate:
+          type: number
+          x-java-type: java.math.BigDecimal
+          example: 12.0
+        tenureYears:
+          type: integer
+          example: 10
+
+    LumpsumCalculatorData:
+      type: object
+      properties:
+        totalInvested:
+          type: number
+          x-java-type: java.math.BigDecimal
+        futureValue:
+          type: number
+          x-java-type: java.math.BigDecimal
+        wealthGained:
+          type: number
+          x-java-type: java.math.BigDecimal
+
+    LumpsumCalculatorResponse:
+      allOf:
+        - $ref: '#/components/schemas/BaseResponse'
+        - type: object
+          properties:
+            data:
+              $ref: '#/components/schemas/LumpsumCalculatorData'
